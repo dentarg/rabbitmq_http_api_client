@@ -2,6 +2,11 @@
 require "spec_helper"
 
 TIMES = 5 # Goal: 200
+IP = if ENV.fetch("GITHUB_ACTIONS", false)
+       /172.18.0.\d+/
+     else
+       /127.0.0.1/
+     end
 
 describe RabbitMQ::HTTP::Client do
   let(:endpoint) { "http://127.0.0.1:15672" }
@@ -199,7 +204,7 @@ describe RabbitMQ::HTTP::Client do
       xs = subject.list_connections
       f  = xs.first
 
-      expect(f.name).to match(/127.0.0.1/)
+      expect(f.name).to match(IP)
       expect(f.client_properties.product).to eq("Bunny")
     end
   end
@@ -210,7 +215,7 @@ describe RabbitMQ::HTTP::Client do
       xs = subject.list_connections
       c  = subject.connection_info(xs.first.name)
 
-      expect(c.name).to match(/127.0.0.1/)
+      expect(c.name).to match(IP)
       expect(c.client_properties.product).to eq("Bunny")
     end
   end
