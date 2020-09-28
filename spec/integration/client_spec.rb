@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 require "spec_helper"
 
+TIMES = 5 # Goal: 200
+
 describe RabbitMQ::HTTP::Client do
   let(:endpoint) { "http://127.0.0.1:15672" }
 
@@ -883,7 +885,7 @@ describe RabbitMQ::HTTP::Client do
       end
     end
 
-    200.times do
+    TIMES.times do
       vhost = gen.string
 
       context "when vhost name is #{vhost}" do
@@ -909,7 +911,7 @@ describe RabbitMQ::HTTP::Client do
     end
 
     gen = Rantly.new
-    200.times do
+    TIMES.times do
       vhost = gen.string
 
       context "when vhost #{vhost} is deleted immediately after being created" do
